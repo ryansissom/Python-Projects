@@ -1,0 +1,60 @@
+import random
+cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
+
+def calc(hand):
+    hand_total = 0
+    for card in hand:
+        hand_total += card
+    if 11 in hand and hand_total > 21:
+        hand.remove(11)
+        hand.append(1)
+    return hand_total
+
+def addCard(hand):
+    hand.append(random.choice(cards))
+    return hand
+
+
+
+def wincon(user_score, computer_score):
+    if user_score > 21 and computer_score > 21:
+        return "You went over. You lose"
+    if user_score == computer_score:
+        return "Draw"
+    elif computer_score == 21:
+        return "Lose, opponent has Blackjack"
+    elif user_score == 21:
+        return "Win with a Blackjack"
+    elif user_score > 21:
+        return "You went over. You lose"
+    elif computer_score > 21:
+        return "Opponent went over. You win"
+    elif user_score > computer_score:
+        return "You win"
+    else:
+        return "You lose"
+
+
+def playGame():
+    player_hand = random.choices(cards, k=2)
+    computer_hand = random.choices(cards, k=2)
+    print(f"Player: {player_hand}")
+    print(f"Computer: [{computer_hand[0]}]")
+    if player_hand == 21 or computer_hand == 21:
+        print(wincon(calc(player_hand), calc(computer_hand)))
+    while calc(player_hand) < 21:
+        cardInp = input("Would you like another card?: ")
+        if cardInp == "Yes":
+            addCard(player_hand)
+            print(f"Current Player Hand: {player_hand}")
+        else:
+            break
+    while calc(computer_hand) < 17:
+        addCard(computer_hand)
+        print(computer_hand)
+
+    print(f"Final Player Hand: {player_hand}")
+    print(f"Final Computer Hand: {computer_hand}")
+    print(wincon(calc(player_hand), calc(computer_hand)))
+
+playGame()
